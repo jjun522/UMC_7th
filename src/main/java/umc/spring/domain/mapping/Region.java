@@ -1,4 +1,4 @@
-package umc.spring.domain;
+package umc.spring.domain.mapping;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import umc.spring.domain.common.BaseEntity;
 
+import jakarta.persistence.*;
 
 @Entity
 @Getter
@@ -19,5 +20,7 @@ public class Region extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long regionId;
 
+    @Column(nullable = false, length = 45)
     private String regionName;
 }
+

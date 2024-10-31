@@ -1,6 +1,7 @@
-package umc.spring.domain;
+package umc.spring.domain.mapping;
 import jakarta.persistence.*;
 import lombok.*;
+import umc.spring.domain.User;
 import umc.spring.domain.common.BaseEntity;
 
 @Entity
@@ -14,13 +15,16 @@ public class Login extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loginId;
 
+    @Column(nullable = false, length = 255)
     private String accessToken;
 
+    @Column(nullable = false, length = 255)
     private String refreshToken;
 
+    @Column(nullable = false, length = 45)
     private String provider;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
