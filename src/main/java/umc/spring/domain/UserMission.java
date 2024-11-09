@@ -12,11 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "user_missions")
 public class UserMission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userMissionId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)

@@ -4,24 +4,30 @@ import jakarta.persistence.*;
 import lombok.*;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.emums.StoreStatus;
+import umc.spring.domain.mapping.Login;
+import umc.spring.domain.mapping.Mission;
 import umc.spring.domain.mapping.Region;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "stores")
 public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storeId;
+    private Long id;
 
     @Column(nullable = false, length = 45)
-    private String storeName;
+    private String name;
 
     @Column(nullable = false, length = 100)
-    private String storeAddress;
+    private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -33,4 +39,35 @@ public class Store extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
+
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserMission> storeUserMission = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> storeReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Mission> storeMissions = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        StringBuilder reviews = new StringBuilder();
+        if (storeReviews != null && !storeReviews.isEmpty()) {
+            storeReviews.forEach(review -> reviews.append("{rating=").append(review.getRating()).append(", comment=").append(review.getComment()).append("}, "));
+        }
+
+        return "Store{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", region=" + (region != null ? region.getRegionName() : "N/A") +
+                ", reviews=" + (!reviews.isEmpty() ? reviews.toString() : "No Reviews") +
+                '}';
+    }
+
+
 }

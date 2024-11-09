@@ -10,17 +10,18 @@ import umc.spring.domain.common.BaseEntity;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "missions")
 public class Mission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long missionId;
+    private Long id;
 
     @Column(nullable = false, length = 45)
-    private String missionTitle;
+    private String title;
 
-    @Column(nullable = false, length = 255)
-    private String missionDescription;
+    @Column(nullable = false, length = 500)
+    private String description;
 
     @Column(nullable = false)
     private int point;
