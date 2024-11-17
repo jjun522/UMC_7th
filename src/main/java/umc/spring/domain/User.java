@@ -2,6 +2,8 @@ package umc.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.emums.Gender;
 import umc.spring.domain.emums.SocialType;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@DynamicUpdate
+@DynamicInsert
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -38,12 +42,13 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String address;
 
-    @Column(length = 100)
-    private String foodData;
-
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = true, length = 20)
     private SocialType loginMethod;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<UserPrefer> userPrefers = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

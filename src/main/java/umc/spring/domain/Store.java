@@ -40,14 +40,15 @@ public class Store extends BaseEntity {
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 
-
+    @Builder.Default
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserMission> storeUserMission = new ArrayList<>();
 
-
+    @Builder.Default
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Review> storeReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "store",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mission> storeMissions = new ArrayList<>();
 
@@ -68,6 +69,11 @@ public class Store extends BaseEntity {
                 ", reviews=" + (!reviews.isEmpty() ? reviews.toString() : "No Reviews") +
                 '}';
     }
+
+   public void setRegion(Region region) {
+        this.region = region;
+   }
+
 
 
 }

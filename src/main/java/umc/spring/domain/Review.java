@@ -38,4 +38,9 @@ public class Review extends BaseEntity {
                 ", comment='" + comment + '\'' +
                 '}';
     }
+
+    public void setStore(Store store) {
+        this.store = store;
+        store.getStoreReviews().add(this);
+    }
 }

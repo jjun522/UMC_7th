@@ -3,13 +3,21 @@ package umc.spring.service.StoreService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import umc.spring.apiPayload.exception.handler.StoreHandler;
+import umc.spring.converter.StoreConverter;
 import umc.spring.domain.Review;
 import umc.spring.domain.Store;
+import umc.spring.repository.RegionRepository.RegionRepository;
 import umc.spring.repository.ReviewRepository.ReviewRepository;
 import umc.spring.repository.StoreRepository.StoreRepository;
+import umc.spring.web.controller.dto.StoreDTO.StoreRequestDTO;
+import umc.spring.web.controller.dto.StoreDTO.StoreResponseDTO;
 
+import umc.spring.domain.mapping.Region;
 import java.util.List;
 import java.util.Optional;
+
+import static umc.spring.apiPayload.code.status.ErrorStatus.Store_region_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +26,7 @@ public class StoreQueryServiceImpl implements StoreQueryService {
 
     private final StoreRepository storeRepository;
     private final ReviewRepository reviewRepository;
+    private final RegionRepository regionRepository;
 
 
     @Override
@@ -45,5 +54,21 @@ public class StoreQueryServiceImpl implements StoreQueryService {
         return filteredStores;
     }
 
+
+    @Override
+    @Transactional
+    public StoreResponseDTO.JoinResultDTO joinStore(Long regionId,StoreRequestDTO.joinStoreDTO request){
+
+        Region region = regionRepository.findById(regionId)
+                .orElseThrow(() -> new StoreHandler(Store_region_NOT_FOUND));
+
+        Store newStore = StoreConverter.ToStore(request);
+        newStore.setRegion(region);
+
+        Store savedStore = storeRepository.save(newStore);
+
+        return StoreConverter.ToStoreDTO(savedStore);
+
+    }
 
 }

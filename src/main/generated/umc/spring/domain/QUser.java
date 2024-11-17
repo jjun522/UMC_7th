@@ -29,8 +29,6 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final StringPath foodData = createString("foodData");
-
     public final EnumPath<umc.spring.domain.emums.Gender> gender = createEnum("gender", umc.spring.domain.emums.Gender.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -49,6 +47,8 @@ public class QUser extends EntityPathBase<User> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
+
+    public final ListPath<UserPrefer, QUserPrefer> userPrefers = this.<UserPrefer, QUserPrefer>createList("userPrefers", UserPrefer.class, QUserPrefer.class, PathInits.DIRECT2);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
