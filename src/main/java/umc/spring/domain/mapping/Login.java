@@ -9,11 +9,12 @@ import umc.spring.domain.common.BaseEntity;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name  = "logins")
 public class Login extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long loginId;
+    private Long id;
 
     @Column(nullable = false, length = 255)
     private String accessToken;
