@@ -31,9 +31,9 @@ public class QUserMission extends EntityPathBase<UserMission> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<umc.spring.domain.emums.MissionStatus> missionStatus = createEnum("missionStatus", umc.spring.domain.emums.MissionStatus.class);
+    public final umc.spring.domain.mapping.QMission mission;
 
-    public final QStore store;
+    public final EnumPath<umc.spring.domain.emums.MissionStatus> missionStatus = createEnum("missionStatus", umc.spring.domain.emums.MissionStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
@@ -58,7 +58,7 @@ public class QUserMission extends EntityPathBase<UserMission> {
 
     public QUserMission(Class<? extends UserMission> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
+        this.mission = inits.isInitialized("mission") ? new umc.spring.domain.mapping.QMission(forProperty("mission"), inits.get("mission")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 

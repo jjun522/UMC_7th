@@ -40,6 +40,8 @@ public class QMission extends EntityPathBase<Mission> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
+    public final ListPath<umc.spring.domain.UserMission, umc.spring.domain.QUserMission> userMissions = this.<umc.spring.domain.UserMission, umc.spring.domain.QUserMission>createList("userMissions", umc.spring.domain.UserMission.class, umc.spring.domain.QUserMission.class, PathInits.DIRECT2);
+
     public QMission(String variable) {
         this(Mission.class, forVariable(variable), INITS);
     }

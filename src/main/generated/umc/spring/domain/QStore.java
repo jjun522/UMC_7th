@@ -43,8 +43,6 @@ public class QStore extends EntityPathBase<Store> {
 
     public final ListPath<Review, QReview> storeReviews = this.<Review, QReview>createList("storeReviews", Review.class, QReview.class, PathInits.DIRECT2);
 
-    public final ListPath<UserMission, QUserMission> storeUserMission = this.<UserMission, QUserMission>createList("storeUserMission", UserMission.class, QUserMission.class, PathInits.DIRECT2);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
