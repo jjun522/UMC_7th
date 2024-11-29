@@ -1,9 +1,13 @@
 package umc.spring.service.StoreService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.spring.apiPayload.exception.handler.StoreHandler;
+import umc.spring.converter.ReviewConverter;
 import umc.spring.converter.StoreConverter;
 import umc.spring.domain.Review;
 import umc.spring.domain.Store;
@@ -16,6 +20,7 @@ import umc.spring.web.controller.dto.StoreDTO.StoreResponseDTO;
 import umc.spring.domain.mapping.Region;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static umc.spring.apiPayload.code.status.ErrorStatus.Store_region_NOT_FOUND;
 
@@ -28,7 +33,6 @@ public class StoreQueryServiceImpl implements StoreQueryService {
     private final ReviewRepository reviewRepository;
     private final RegionRepository regionRepository;
 
-
     @Override
     public Optional<Store> findStore(Long id) {
         return storeRepository.findById(id);
@@ -38,6 +42,7 @@ public class StoreQueryServiceImpl implements StoreQueryService {
     public Optional<Review> findReview(Long id) {
         return reviewRepository.findById(id);
     }
+
 
 
 
@@ -69,6 +74,25 @@ public class StoreQueryServiceImpl implements StoreQueryService {
 
         return StoreConverter.ToStoreDTO(savedStore);
 
+    }
+
+    public StoreResponseDTO.ReviewPreViewListDTO getReviewList(Long storeId, int page) {
+        // 페이징 처리
+        Pageable pageable = PageRequest.of(page - 1, 10); // 페이지당 10개 조회
+        Page<Review> reviewPage = reviewRepository.findByStoreId(storeId, pageable);
+
+        // 리뷰 목록 변환
+        List<StoreResponseDTO.ReviewDTO> reviews = reviewPage.stream()
+                .map(ReviewConverter::toReviewPageDTO)
+                .collect(Collectors.toList());
+
+        // 결과 DTO 생성
+        return StoreResponseDTO.ReviewPreViewListDTO.builder()
+                .reviews(reviews)
+                .currentPage(page)
+                .totalPages(reviewPage.getTotalPages())
+                .totalReviews(reviewPage.getTotalElements())
+                .build();
     }
 
 }

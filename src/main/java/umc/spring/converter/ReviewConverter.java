@@ -5,6 +5,7 @@ import umc.spring.domain.Store;
 import umc.spring.domain.User;
 import umc.spring.web.controller.dto.ReviewDTO.ReviewRequestDTO;
 import umc.spring.web.controller.dto.ReviewDTO.ReviewResponseDTO;
+import umc.spring.web.controller.dto.StoreDTO.StoreResponseDTO;
 
 import java.time.LocalDateTime;
 
@@ -35,4 +36,17 @@ public class ReviewConverter {
                 .build();
 
     }
+
+
+
+        public static StoreResponseDTO.ReviewDTO toReviewPageDTO(Review review) {
+            return StoreResponseDTO.ReviewDTO.builder()
+                    .reviewId(review.getId())
+                    .comment(review.getComment())
+                    .rating(review.getRating())
+                    .createdAt(review.getCreatedAt())
+                    .build();
+        }
+
+
 }

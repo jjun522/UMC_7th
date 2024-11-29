@@ -14,5 +14,5 @@ public interface StoreQueryService {
     Optional<Review> findReview(Long id);
     List<Store> findStoresByNameAndScore(String name, Integer rating);
     StoreResponseDTO.JoinResultDTO joinStore(Long regionId, StoreRequestDTO.joinStoreDTO request);
-
+    StoreResponseDTO.ReviewPreViewListDTO getReviewList(Long storeId, int page);
 }

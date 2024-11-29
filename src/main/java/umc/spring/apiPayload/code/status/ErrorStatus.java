@@ -20,6 +20,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _FOOD_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND,"FOOD4001","잘못된 요청입니다"),
     Store_region_NOT_FOUND(HttpStatus.NOT_FOUND,"STORE40001","잘못된 요청입니다"),
 
+    PAGE_Error(HttpStatus.BAD_REQUEST,"Page4001","페이지 요청이 잘못된 요청입니다"),
+
+
     Mission_STORE_NOT_FOUND(HttpStatus.NOT_FOUND,"MISSION40001","가게를 찾을 수 없습니다"),
 
     User_NOT_FOUND(HttpStatus.NOT_FOUND,"USER40001","이용자를 찾을 수 없습니다"),

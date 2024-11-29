@@ -1,4 +1,4 @@
-package umc.spring.web.controller.dto.addMissionDTO;
+package umc.spring.web.controller.dto.MissionDTO;
 
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

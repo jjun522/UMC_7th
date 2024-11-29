@@ -1,6 +1,8 @@
 package umc.spring.service.MissionService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umc.spring.apiPayload.exception.handler.MissionHandler;
@@ -12,13 +14,12 @@ import umc.spring.domain.UserMission;
 import umc.spring.domain.mapping.Mission;
 import umc.spring.repository.MissionRepository.MissionRepository;
 import umc.spring.repository.StoreRepository.StoreRepository;
-import umc.spring.repository.UserMissionRepository.UerMissionRepository;
+import umc.spring.repository.UserMissionRepository.UserMissionRepository;
 import umc.spring.repository.UserRepository.UserRepository;
-import umc.spring.web.controller.MissionChallengeController;
 import umc.spring.web.controller.dto.MissionChallenge.MissionChallengeRequestDTO;
 import umc.spring.web.controller.dto.MissionChallenge.MissionChallengeResponseDTO;
-import umc.spring.web.controller.dto.addMissionDTO.MissionRequestDTO;
-import umc.spring.web.controller.dto.addMissionDTO.MissionResponseDTO;
+import umc.spring.web.controller.dto.MissionDTO.MissionRequestDTO;
+import umc.spring.web.controller.dto.MissionDTO.MissionResponseDTO;
 
 import static umc.spring.apiPayload.code.status.ErrorStatus.*;
 
@@ -30,7 +31,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     private final MissionRepository missionRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final UerMissionRepository userMissionRepository;
+    private final UserMissionRepository userMissionRepository;
 
     @Override
     @Transactional
@@ -66,6 +67,22 @@ public class MissionQueryServiceImpl implements MissionQueryService {
         userMissionRepository.save(newUserMission);
 
         return MissionChallengeConverter.ToChallengeDTO(newUserMission);
+    }
+
+    public MissionResponseDTO.PagedMissionDTO getMissionsByStore(Long storeId, int page) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 가게가 존재하지 않습니다."));
+
+        PageRequest pageRequest = PageRequest.of(page, 10); // 한 페이지당 10개
+        Page<MissionResponseDTO.MissionDTO> missions = missionRepository
+                .findByStore(store, pageRequest)
+                .map(MissionConverter::toMissionPageDTO);
+
+        return MissionResponseDTO.PagedMissionDTO.builder()
+                .missions(missions.getContent())
+                .currentPage(missions.getNumber() + 1) // 0-based -> 1-based
+                .totalPages(missions.getTotalPages())
+                .build();
     }
 
 }

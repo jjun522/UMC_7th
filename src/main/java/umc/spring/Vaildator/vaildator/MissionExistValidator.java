@@ -8,14 +8,14 @@ import umc.spring.Vaildator.annotation.ExistMission;
 import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.domain.emums.MissionStatus;
 import umc.spring.repository.MissionRepository.MissionRepository;
-import umc.spring.repository.UserMissionRepository.UerMissionRepository;
+import umc.spring.repository.UserMissionRepository.UserMissionRepository;
 
 @Component
 @RequiredArgsConstructor
 public class MissionExistValidator implements ConstraintValidator<ExistMission, Long> {
 
     private final MissionRepository missionRepository;
-    private final UerMissionRepository userMissionRepository;
+    private final UserMissionRepository userMissionRepository;
 
     @Override
     public void initialize(ExistMission constraintAnnotation) {
