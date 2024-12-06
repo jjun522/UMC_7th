@@ -2,6 +2,7 @@ package umc.spring.service.UserService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.apiPayload.exception.handler.FoodCategoryHandler;
@@ -21,19 +22,25 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserCommandServiceImpl implements UserQueryService{
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
     private final FoodCategoryRepository foodCategoryRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public User joinUser(UserRequestDTO.JoinDto request){
         User newUser = UserConverter.toUser(request);
 
+        newUser.encodePassword(passwordEncoder.encode(request.getPassword()));
+
+
         List<FoodCategory> foodCategoryList = request.getPreferCategory().stream()
                 .map(category ->{
                         return foodCategoryRepository.findById(category).orElseThrow(() -> new FoodCategoryHandler(ErrorStatus._FOOD_CATEGORY_NOT_FOUND));
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
+
 
         List<UserPrefer> UserPreferList = UserPreferConverter.toUserPreferList(foodCategoryList);
 
@@ -43,4 +50,5 @@ public class UserCommandServiceImpl implements UserQueryService{
         return userRepository.save(newUser);
 
     }
+
 }

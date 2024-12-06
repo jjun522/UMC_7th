@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.emums.Gender;
+import umc.spring.domain.emums.Role;
 import umc.spring.domain.emums.SocialType;
 import umc.spring.domain.mapping.Inquiry;
 import umc.spring.domain.mapping.Login;
@@ -42,6 +43,15 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String address;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = true, length = 20)
     private SocialType loginMethod;
@@ -65,6 +75,11 @@ public class User extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> memberReview = new ArrayList<>();
+
+
+    public void encodePassword(String password) {
+        this.password = password;
+    }
 
 
 }

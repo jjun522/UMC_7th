@@ -34,9 +34,12 @@ public class UserConverter {
         }
 
         return User.builder()
-                .address(request.getAddress())
-                .gender(gender)
                 .name(request.getName())
+                .email(request.getEmail())   // 추가된 코드
+                .password(request.getPassword())   // 추가된 코드
+                .gender(gender)
+                .address(request.getAddress())
+                .role(request.getRole())   // 추가된 코드
                 .userPrefers(new ArrayList<>())
                 .build();
 
