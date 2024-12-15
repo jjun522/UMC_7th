@@ -14,11 +14,12 @@ import jakarta.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "regions")
 public class Region extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long regionId;
+    private Long id;
 
     @Column(nullable = false, length = 45)
     private String regionName;
